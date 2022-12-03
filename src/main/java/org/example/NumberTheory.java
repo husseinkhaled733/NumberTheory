@@ -82,11 +82,20 @@ public class NumberTheory {
 
         return x;
     }
-
-
+    
+    
+    public boolean checkcomposite(long b,long n,long k,long number){
+        if (b == -1 || b == n || b == 1) return false;
+        for (int j = 1; j < k; j++) {
+            b= (b*b) % number;
+            if (b==-1||b==n){
+                return false;
+            }
+        }
+        return true;
+    }
     public boolean MillerTest(long number) {
-
-        if (number < 3) return number % 2 == 0;
+        if (number < 4) return number == 2 || number == 3;
         if (number % 2 == 0) return false;
 
         // n-1 = 2^k * m
@@ -98,21 +107,14 @@ public class NumberTheory {
 
         n = number - 1;
         long m = n / (long) Math.pow(2, k);
-        a = (long) (Math.random() * (n - 1) + 2);
-
-        long b = (long) Math.pow(a, m) % number;
-        if (b == 1) return false;
-        else if (b == -1 || b == n) return true;
-
-        while (m != n) {
-            b = (b * b) % number;
-            m *= 2;
-
-            if (b == 1) return false;
-            else if (b == n) return true;
+        for (int i = 0; i <iter ; i++) {
+            a = (long) (Math.random() * (n - 1) + 2);
+            long b = (long) Math.pow(a, m) % number;
+            if(checkcomposite(b,n,k,number)){
+                return false;
+            }
         }
-
-        return false;
+        return true;
     }
 
     int modInverse(long a, long m) {
